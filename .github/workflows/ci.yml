@@ -1,10 +1,5 @@
 name: CI
 on:
-  push:
-    paths:
-      - ".github/workflows/ci.yml"
-      - "recipes/**"
-      - "docs/archive/**"
   pull_request:
     paths:
       - ".github/workflows/ci.yml"
@@ -15,7 +10,7 @@ jobs:
   checkout-with-changes:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: purcell/setup-emacs@master
         with:
           version: 29.1
