@@ -24,9 +24,10 @@
 ;;; Commentary:
 ;;
 ;; ThELPA is an Emacs utility to maintain the ThELPA package repository. The repository is built
-;; into the docs/thelpa directory, ready for GitHub to serve through GH Pages.
+;; into the docs/archive directory, ready for GitHub to serve through GitHub pages
 ;;
-;; The actual command-line utility is in bin/thelpa-build, which is normally run from the Makefile.
+;; These functions are normally run from the Makefile, such as with `make', `make build' or `make
+;; commit'.
 ;;
 ;; This package is based on 10sr's github-elpa project, with significant modifications and a
 ;; simplified interface. ThELPA is not intended to be a kickstarter for your own ELPA as github-elpa
@@ -41,7 +42,7 @@
 (defvar thelpa-working-dir "./.thelpa-working"
   "Working directory for ThELPA during build time.")
 
-(defvar thelpa-archive-dir "./docs/thelpa"
+(defvar thelpa-archive-dir "./docs/archive"
   "Directory to store built packages.")
 
 (defvar thelpa-recipes-dir "./recipes"
