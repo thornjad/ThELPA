@@ -62,7 +62,7 @@
   (let ((git-repo default-directory))
     (condition-case err
         (git-run "diff" "--quiet")
-      (git-error (error "ThELPA Git working tree is not clean")))))
+      (git-error (error (concat "ThELPA Git working tree is not clean: " err))))))
 
 (defun thelpa--git-commit-archives ()
   "Commit elpa archives to git repository."
