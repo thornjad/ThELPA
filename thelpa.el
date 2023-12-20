@@ -61,9 +61,9 @@
 (defun thelpa--git-check-workdir-clean ()
   "Check if current working tree is clean."
   (let ((git-repo default-directory))
-    (condition-case err
+    (condition-case _err
         (git-run "diff" "--quiet")
-      (git-error (error (concat "ThELPA Git working tree is not clean: " err))))))
+      (git-error (error "ThELPA Git working tree is not clean")))))
 
 (defun thelpa--git-commit-archives ()
   "Commit elpa archives to git repository."
@@ -79,8 +79,6 @@
   (let ((package-build-working-dir (expand-file-name thelpa-working-dir))
         (package-build-archive-dir (expand-file-name thelpa-archive-dir))
         (package-build-recipes-dir (expand-file-name thelpa-recipes-dir)))
-    (thelpa--git-check-repo)
-    (thelpa--git-check-workdir-clean)
     (make-directory package-build-archive-dir t)
     ;; TODO Currently no way to detect build failure...
     (dolist (recipe (directory-files package-build-recipes-dir nil "^[^.]"))
@@ -96,6 +94,7 @@
         (package-build-recipes-dir (expand-file-name thelpa-recipes-dir)))
     (message ":: ThELPA: Commit packages in %s" package-build-archive-dir)
     (thelpa--git-check-repo)
+    (thelpa--git-check-workdir-clean)
     (thelpa--git-commit-archives)))
 
 (provide 'thelpa)

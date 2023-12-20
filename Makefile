@@ -12,7 +12,7 @@ cask ?= EMACS=$(EMACS) \
 	EMACSLOADPATH=$(project_root):$(EMACSLOADPATH) \
 	$(cask_install_path)/bin/cask
 cask_emacs := $(cask) emacs
-thelpa_batch_emacs := $(cask_emacs) --batch -Q --load=thelpa.el
+thelpa_batch_emacs := $(cask_emacs) -batch -Q --load=thelpa.el
 
 .PHONY: all
 all: build commit
