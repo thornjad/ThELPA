@@ -1,7 +1,7 @@
 ;;; thelpa.el --- Build and publish ThELPA with GitHub Pages -*- lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2023 Jade Michael Thornton
-;; Copyright (C) 2016 10sr
+;; Copyright (c) 2016 10sr
 ;;
 ;; URL: https://github.com/thornjad/thelpa
 ;; Version: 0.1.0
@@ -26,10 +26,11 @@
 ;; ThELPA is an Emacs utility to maintain the ThELPA package repository. The repository is built
 ;; into the docs/thelpa directory, ready for GitHub to serve through GH Pages.
 ;;
-;; This package is mainly intended to be used from Cask. See https://github.com/thornjad/thelpa for
-;; usage guide.
+;; The actual command-line utility is in bin/thelpa-build, which is normally run from the Makefile.
 ;;
-;; This package is based on 10sr's github-elpa project
+;; This package is based on 10sr's github-elpa project, with significant modifications and a
+;; simplified interface. ThELPA is not intended to be a kickstarter for your own ELPA as github-elpa
+;; is, but rather a tool to maintain the ThELPA repository only.
 ;;
 
 (require 'package-build)
@@ -46,8 +47,8 @@
 (defvar thelpa-recipes-dir "./recipes"
   "Directory to store recipes.")
 
-(defvar thelpa-tar-executable nil
-  "Path to tar executable.")
+
+;; Helpers
 
 (defun thelpa--git-check-repo ()
   "Check if current directory is git top level directory."
@@ -69,9 +70,16 @@
     (git-add thelpa-archive-dir)
     (git-commit "[ThELPA] Update archive" thelpa-archive-dir)))
 
-;;;###autoload
+
+;; Main functions
+
+(defun thelpa-update ()
+  "Main function to update and commit ThELPA archive."
+  (thelpa-build)
+  (thelpa-commit))
+
 (defun thelpa-build ()
-  "Main build function for ThELPA."
+  "Build function for ThELPA."
   (let ((package-build-working-dir (expand-file-name thelpa-working-dir))
         (package-build-archive-dir (expand-file-name thelpa-archive-dir))
         (package-build-recipes-dir (expand-file-name thelpa-recipes-dir)))
@@ -81,12 +89,10 @@
     ;; TODO Currently no way to detect build failure...
     (dolist (recipe (directory-files package-build-recipes-dir nil "^[^.]"))
       (message ":: ThELPA: packaging recipe %s" recipe)
-      (let ((package-build-tar-executable (or thelpa-tar-executable
-                                              package-build-tar-executable)))
+      (let ((package-build-tar-executable package-build-tar-executable))
         (package-build-archive recipe)))
     (package-build-cleanup)))
 
-;;;###autoload
 (defun thelpa-commit ()
   "Commit built packages to git repository."
   (let ((package-build-working-dir (expand-file-name thelpa-working-dir))
