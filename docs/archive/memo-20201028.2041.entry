@@ -1,0 +1,4 @@
+(memo .
+      [(20201028 2041) nil "Memoization library" single
+       ((:commit . "384feec480756dfcb0e2cc009e0fb8ea2493b38c")
+	(:url . "https://gitlab.com/thornjad/emacs-memo"))])
