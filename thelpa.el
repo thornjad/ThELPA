@@ -51,13 +51,6 @@
 
 ;; Helpers
 
-(defun thelpa--git-check-repo ()
-  "Check if current directory is git top level directory."
-  (or (git-repo? default-directory)
-      (error (concat "Working directory is not a git directory: "
-                     default-directory
-                     " Did you mean to run this from the top level of ThELPA?"))))
-
 (defun thelpa--git-check-workdir-clean ()
   "Check if current working tree is clean."
   (let ((git-repo default-directory))
@@ -80,7 +73,7 @@
         (package-build-archive-dir (expand-file-name thelpa-archive-dir))
         (package-build-recipes-dir (expand-file-name thelpa-recipes-dir)))
     (make-directory package-build-archive-dir t)
-    ;; TODO Currently no way to detect build failure...
+    (thelpa--git-check-workdir-clean)
     (dolist (recipe (directory-files package-build-recipes-dir nil "^[^.]"))
       (message ":: ThELPA: packaging recipe %s" recipe)
       (let ((package-build-tar-executable package-build-tar-executable))
@@ -93,8 +86,6 @@
         (package-build-archive-dir (expand-file-name thelpa-archive-dir))
         (package-build-recipes-dir (expand-file-name thelpa-recipes-dir)))
     (message ":: ThELPA: Commit packages in %s" package-build-archive-dir)
-    (thelpa--git-check-repo)
-    (thelpa--git-check-workdir-clean)
     (thelpa--git-commit-archives)))
 
 (provide 'thelpa)
