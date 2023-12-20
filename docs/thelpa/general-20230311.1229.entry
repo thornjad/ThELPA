@@ -1,0 +1,8 @@
+(general .
+	 [(20230311 1229) ((emacs (24 4)) (cl-lib (0 5)))
+	  "Convenience wrappers for keybindings." tar
+	  ((:commit . "833dea2c4a60e06fcd552b653dfc8960935c9fb4")
+	   (:authors ("Fox Kiester" . "noct@posteo.net"))
+	   (:maintainer "Fox Kiester" . "noct@posteo.net")
+	   (:keywords "vim" "evil" "leader" "keybindings" "keys")
+	   (:url . "https://github.com/noctuid/general.el"))])
