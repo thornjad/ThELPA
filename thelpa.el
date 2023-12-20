@@ -101,3 +101,5 @@
 (provide 'thelpa)
 
 ;;; thelpa.el ends here
+
+;; LocalWords:  thelpa sr sr's github-elpa
