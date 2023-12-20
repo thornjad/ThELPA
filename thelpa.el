@@ -54,9 +54,10 @@
 (defun thelpa--git-check-workdir-clean ()
   "Check if current working tree is clean."
   (let ((git-repo default-directory))
-    (condition-case _err
-        (git-run "diff" "--quiet")
-      (git-error (error "ThELPA Git working tree is not clean")))))
+    (condition-case _err (git-run "diff")
+      (git-error
+       (let ((status-output (shell-command-to-string "git status -sb")))
+         (error "ThELPA Git working tree is not clean\n%s" status-output))))))
 
 (defun thelpa--git-commit-archives ()
   "Commit elpa archives to git repository."
