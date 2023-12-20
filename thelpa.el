@@ -73,11 +73,6 @@
 
 ;; Main functions
 
-(defun thelpa-update ()
-  "Main function to update and commit ThELPA archive."
-  (thelpa-build)
-  (thelpa-commit))
-
 (defun thelpa-build ()
   "Build function for ThELPA."
   (let ((package-build-working-dir (expand-file-name thelpa-working-dir))

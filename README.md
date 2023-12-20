@@ -5,9 +5,13 @@ This repository is my custom ELPA for maximum control. Primarily used to provide
 ## Updating the archive
 
 ``` sh
-make install-cask  # if you don't already have Cask itself installed
-make cask-install  # first time set-up only
 make
+```
+
+### Build without committing
+
+``` sh
+make build
 ```
 
 ## Testing

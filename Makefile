@@ -1,43 +1,54 @@
-emacs ?= emacs
+EMACS ?= $(shell command -v emacs 2>/dev/null)
 git ?= git
 markdown ?= markdown
+CASK_DIR := $(shell cask package-directory)
 
 project_root := $(CURDIR)
 
 cask_install_path := $(project_root)/cask-repository
 cask_repository := https://github.com/cask/cask.git
-cask_version := v0.8.4
-cask ?= CASK_EMACS=$(emacs) \
+cask_version := v0.9.0
+cask ?= EMACS=$(EMACS) \
 	EMACSLOADPATH=$(project_root):$(EMACSLOADPATH) \
 	$(cask_install_path)/bin/cask
-casked_emacs := $(cask) emacs
+cask_emacs := $(cask) emacs
+thelpa_batch_emacs := $(cask_emacs) --batch -Q --load=thelpa.el
 
-.PHONY: all clean test info
+.PHONY: all
+all: build commit
 
-all: clean compile thelpa
+.PHONY: build
+build: compile
+	$(thelpa_batch_emacs) -f thelpa-build
 
-.PHONY: thelpa
-thelpa:
-	$(cask) exec bin/thelpa update
+.PHONY: commit
+commit:
+	$(thelpa_batch_emacs) -f thelpa-commit
 
-el = $(wildcard *.el)
-elc = $(el:%.el=%.elc)
+.PHONY: compile
+compile: cask
+	$(cask_emacs) -batch -L . -L test \
+		--eval "(setq byte-compile-error-on-warn t)" \
+	  -f batch-byte-compile $$(cask files); \
+	  (ret=$$? ; cask clean-elc && exit $$ret)
 
-clean:
-	$(RM) $(elc)
+### Cask
 
-compile: $(elc)
+.PHONY: cask
+cask: $(CASK_DIR)
 
-$(elc): %.elc: %.el
-	$(casked_emacs) -batch -q -f batch-byte-compile $<
+$(CASK_DIR): install-cask
+	$(cask) install
+	@touch $(CASK_DIR)
 
+.PHONY: install-cask
 install-cask:
 	test -d $(cask_install_path) || $(git) clone $(cask_repository) $(cask_install_path)
 	cd $(cask_install_path) && $(git) checkout -f $(cask_version) && $(git) clean -xdf
 
-cask-install:
-	$(cask) install
+### Test
 
+.PHONY: test
 test: compile info
 
 elisp_get_file_package_info := \
@@ -53,8 +64,9 @@ elisp_print_infos := \
 			(message \"%S\" (funcall $(elisp_get_file_package_info) f))) \
 		command-line-args-left)
 
+.PHONY: info
 info: $(el)
-	$(casked_emacs) -batch -Q \
+	$(cask_emacs) -batch -Q \
 		--eval "(require 'package)" \
 		--eval "$(elisp_print_infos)" \
 		$^
