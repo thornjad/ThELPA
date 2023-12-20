@@ -5,7 +5,7 @@ CASK_DIR := $(shell cask package-directory)
 
 project_root := $(CURDIR)
 
-cask_install_path := $(project_root)/cask-repository
+cask_install_path ?= $(project_root)/cask-repository
 cask_repository := https://github.com/cask/cask.git
 cask_version := v0.9.0
 cask ?= EMACS=$(EMACS) \

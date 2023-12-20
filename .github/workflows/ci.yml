@@ -13,6 +13,8 @@ concurrency:
 jobs:
   build-test:
     runs-on: ubuntu-latest
+    env:
+      cask_install_path: ~/.cask
     steps:
       - uses: actions/checkout@v4
       - uses: purcell/setup-emacs@master
