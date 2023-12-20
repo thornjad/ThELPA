@@ -1,0 +1,13 @@
+# Compiled
+*.elc
+
+# Packaging
+.cask
+.eask
+
+# working dir
+.thelpa-working/
+
+# Cask repository
+dist/
+cask-repository/
