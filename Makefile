@@ -37,7 +37,7 @@ compile: cask
 .PHONY: cask
 cask: $(CASK_DIR)
 
-$(CASK_DIR): install-cask
+$(CASK_DIR):
 	$(cask) install
 	@touch $(CASK_DIR)
 
