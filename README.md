@@ -14,12 +14,6 @@ make
 make build
 ```
 
-## Testing
-
-``` sh
-make test
-```
-
 ## Use the archive from Emacs
 
 ### Using package.el

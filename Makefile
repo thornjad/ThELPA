@@ -45,28 +45,3 @@ $(CASK_DIR): install-cask
 install-cask:
 	test -d $(cask_install_path) || $(git) clone $(cask_repository) $(cask_install_path)
 	cd $(cask_install_path) && $(git) checkout -f $(cask_version) && $(git) clean -xdf
-
-### Test
-
-.PHONY: test
-test: compile info
-
-elisp_get_file_package_info := \
-	(lambda (f) \
-		(with-temp-buffer \
-			(insert-file-contents-literally f) \
-			(package-buffer-info)))
-
-elisp_print_infos := \
-	(mapc \
-		(lambda (f) \
-			(message \"Loading info: %s\" f) \
-			(message \"%S\" (funcall $(elisp_get_file_package_info) f))) \
-		command-line-args-left)
-
-.PHONY: info
-info: $(el)
-	$(cask_emacs) -batch -Q \
-		--eval "(require 'package)" \
-		--eval "$(elisp_print_infos)" \
-		$^
