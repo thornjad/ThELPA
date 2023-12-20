@@ -36,10 +36,10 @@ jobs:
           version: snapshot
       - name: Build recipes
         run: make build
-      - name: Check for changes in docs/archive
+      - name: Check that docs/archive is up-to-date
         id: check-changes
         run: |
           if [[ -n $(git status --porcelain docs/archive) ]]; then
-            echo "Changes detected in docs/archive. Please run `make all` to commit generated archive contents."
+            echo "ERROR: Changes detected in docs/archive. Please run `make all` to commit generated archive contents."
             exit 1
           fi
