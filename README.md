@@ -6,6 +6,8 @@ The archive is published at https://thornjad.github.io/thelpa/archive/ or recipe
 
 ## Updating the archive
 
+Requires that [Cask](https://github.com/cask/cask) is already installed.
+
 ``` sh
 make
 ```
