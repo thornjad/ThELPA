@@ -1,0 +1,4 @@
+(general
+ :fetcher github
+ :repo "thornjad/emacs-memo"
+ :branch "main")
