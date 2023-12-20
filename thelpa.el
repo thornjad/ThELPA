@@ -102,4 +102,4 @@
 
 ;;; thelpa.el ends here
 
-;; LocalWords:  thelpa sr sr's github-elpa
+;; LocalWords:  thelpa sr sr's
