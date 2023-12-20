@@ -5,12 +5,9 @@ CASK_DIR := $(shell cask package-directory)
 
 project_root := $(CURDIR)
 
-CASK_INSTALL_PATH ?= $(project_root)/cask-repository
 cask_repository := https://github.com/cask/cask.git
 cask_version := v0.9.0
-cask ?= EMACS=$(EMACS) \
-	EMACSLOADPATH=$(project_root):$(EMACSLOADPATH) \
-	$(CASK_INSTALL_PATH)/bin/cask
+cask ?= EMACS=$(EMACS) EMACSLOADPATH=$(project_root):$(EMACSLOADPATH) cask
 cask_emacs := $(cask) emacs
 thelpa_batch_emacs := $(cask_emacs) --batch -Q --load=thelpa.el
 
@@ -37,11 +34,6 @@ compile: cask
 .PHONY: cask
 cask: $(CASK_DIR)
 
-$(CASK_DIR): install-cask
+$(CASK_DIR):
 	$(cask) install
 	@touch $(CASK_DIR)
-
-.PHONY: install-cask
-install-cask:
-	test -d $(CASK_INSTALL_PATH) || $(git) clone $(cask_repository) $(cask_install_path)
-	cd $(CASK_INSTALL_PATH) && $(git) checkout -f $(cask_version) && $(git) clean -xdf
