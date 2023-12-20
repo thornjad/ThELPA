@@ -13,17 +13,21 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      CASK_INSTALL_PATH: ~/.cask
     steps:
       - uses: actions/checkout@v4
       - uses: purcell/setup-emacs@master
         with:
           version: 29.1
-      - uses: actions/cache@v2
+      - name: cache cask packages
+        uses: actions/cache@v3
         id: cache-cask-packages
         with:
           path: .cask
           key: cache-cask-packages-000
-      - uses: actions/cache@v2
+      - name: cache cask executable
+        uses: actions/cache@v3
         id: cache-cask-executable
         with:
           path: ~/.cask

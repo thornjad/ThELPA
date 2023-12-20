@@ -5,12 +5,12 @@ CASK_DIR := $(shell cask package-directory)
 
 project_root := $(CURDIR)
 
-cask_install_path := $(project_root)/cask-repository
+CASK_INSTALL_PATH ?= $(project_root)/cask-repository
 cask_repository := https://github.com/cask/cask.git
 cask_version := v0.9.0
 cask ?= EMACS=$(EMACS) \
 	EMACSLOADPATH=$(project_root):$(EMACSLOADPATH) \
-	$(cask_install_path)/bin/cask
+	$(CASK_INSTALL_PATH)/bin/cask
 cask_emacs := $(cask) emacs
 thelpa_batch_emacs := $(cask_emacs) --batch -Q --load=thelpa.el
 
@@ -43,5 +43,5 @@ $(CASK_DIR): install-cask
 
 .PHONY: install-cask
 install-cask:
-	test -d $(cask_install_path) || $(git) clone $(cask_repository) $(cask_install_path)
-	cd $(cask_install_path) && $(git) checkout -f $(cask_version) && $(git) clean -xdf
+	test -d $(CASK_INSTALL_PATH) || $(git) clone $(cask_repository) $(cask_install_path)
+	cd $(CASK_INSTALL_PATH) && $(git) checkout -f $(cask_version) && $(git) clean -xdf
