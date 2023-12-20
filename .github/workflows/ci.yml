@@ -2,10 +2,12 @@ name: CI
 on:
   push:
     paths:
+      - ".github/workflows/ci.yml"
       - "recipes/**"
       - "docs/archive/**"
   pull_request:
     paths:
+      - ".github/workflows/ci.yml"
       - "recipes/**"
       - "docs/archive/**"
 
